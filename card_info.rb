@@ -1,7 +1,7 @@
 require 'bindata'
 
 class CardInfo < BinData::Record
-  bit20 :balance # ~10000 roubles with copecks
+  bit20 :balance
   bit4 :tariff
   bit7 :year
   bit4 :month
@@ -14,6 +14,9 @@ class CardInfo < BinData::Record
   end
 
   def from_hash(h)
-    h.each {|k,v| send("#{k}=", v)}
+    h.each do |k,v| 
+      v = v.to_i if k != "name"
+      send("#{k}=", v)
+    end
   end
 end
